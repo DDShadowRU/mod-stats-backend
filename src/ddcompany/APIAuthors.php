@@ -23,7 +23,7 @@ class APIAuthors extends AbstractAPI
 
         $db->close();
         $this->cancel([
-            "page" => $page,
+            "page" => intval($page),
             "maxPage" => $maxPage,
             "records" => array_map(function ($author) {
                 return [

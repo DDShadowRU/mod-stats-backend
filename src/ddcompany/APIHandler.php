@@ -18,7 +18,7 @@ class APIHandler
         $this->actions["authors"] = new APIAuthors();
     }
 
-    function handle(array $params1)
+    function handle()
     {
         header('Content-Type: application/json');
         $uri = substr($_SERVER["REDIRECT_URL"], 1);

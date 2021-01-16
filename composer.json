@@ -1,0 +1,13 @@
+{
+  "name": "ddcompany/mod-stats",
+  "require": {
+    "vlucas/phpdotenv": "^5.2",
+    "ext-json": "*",
+    "ext-mysqli": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "ddcompany\\": "src/"
+    }
+  }
+}

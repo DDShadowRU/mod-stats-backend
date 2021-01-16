@@ -13,7 +13,7 @@ class APIHandler
 
     public function __construct()
     {
-        $this->actions["mod/{id}"] = new APIStats();
+        $this->actions["mod/{id}"] = new APIMod();
         $this->actions["dump"] = new APIDump();
         $this->actions["authors"] = new APIAuthors();
     }

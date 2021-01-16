@@ -4,7 +4,7 @@ namespace ddcompany;
 
 use mysqli;
 
-class APIStats extends AbstractAPI
+class APIMod extends AbstractAPI
 {
     function run(array $params)
     {

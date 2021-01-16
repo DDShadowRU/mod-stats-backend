@@ -6,10 +6,10 @@ use mysqli;
 
 class APIStats extends AbstractAPI
 {
-    function run()
+    function run(array $params)
     {
-        parent::run();
-        $modId = $_GET["mod_id"];
+        parent::run($params);
+        $modId = $params["id"];
         $this->requirePresent($modId, "Invalid mod id");
 
         $db = MySqlHelper::connect();

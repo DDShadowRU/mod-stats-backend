@@ -6,7 +6,7 @@ abstract class AbstractAPI implements IAPI
 {
     private $startTime = 0;
 
-    function run()
+    function run(array $params)
     {
         $this->startTime = microtime(true);
     }

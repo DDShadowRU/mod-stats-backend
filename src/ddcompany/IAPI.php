@@ -3,7 +3,7 @@ namespace ddcompany;
 
 interface IAPI
 {
-    function run();
+    function run(array $params);
 
     function cancel(array $result);
 

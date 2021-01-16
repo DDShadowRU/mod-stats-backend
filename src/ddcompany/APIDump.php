@@ -9,9 +9,9 @@ class APIDump extends AbstractAPI
     private static $lockFile = ".dump-lock";
     private static $logFile = "dump_log.txt";
 
-    function run()
+    function run(array $params)
     {
-        parent::run();
+        parent::run($params);
         if ($_GET["s"] !== $_ENV["SECRET"]) {
             $this->fall("No, man");
         }

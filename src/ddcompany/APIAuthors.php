@@ -7,9 +7,9 @@ require_once "math.php";
 
 class APIAuthors extends AbstractAPI
 {
-    function run()
+    function run(array $params)
     {
-        parent::run();
+        parent::run($params);
 
         $db = MySqlHelper::connect();
         $perPage = clamp(5, 20, $this->getOr("count", 20));

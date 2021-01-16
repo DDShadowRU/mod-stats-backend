@@ -13,24 +13,48 @@ class APIHandler
 
     public function __construct()
     {
-        $this->actions["mod"] = new APIStats();
+        $this->actions["mod/{id}"] = new APIStats();
         $this->actions["dump"] = new APIDump();
         $this->actions["authors"] = new APIAuthors();
     }
 
-    function handle(array $params)
+    function handle(array $params1)
     {
         header('Content-Type: application/json');
-        $action = $this->actions[$params["action"]];
-        if (!$action) {
-            $this->fall("Undefined action");
+        $uri = substr($_SERVER["REDIRECT_URL"], 1);
+        $parts = preg_split("[/]", $uri);
+        $partsCount = count($parts);
+
+        foreach ($this->actions as $key => $action) {
+            $actionParts = preg_split("[/]", $key);
+            if ($partsCount !== count($actionParts)) {
+                continue;
+            }
+
+            $params = [];
+            foreach ($actionParts as $actionPartKey => $actionPart) {
+                if ($partsCount < $actionPartKey) {
+                    continue 2;
+                }
+
+                $matches = [];
+                if (preg_match("/[{](\w+)[}]/", $actionPart, $matches)) {
+                    $params[$matches[1]] = $parts[$actionPartKey];
+                } else if ($actionPart != $parts[$actionPartKey]) {
+                    continue 2;
+                }
+            }
+
+
+            try {
+                $action->run($params);
+            } catch (Exception $e) {
+                $this->fall($e->getMessage());
+            }
+            return;
         }
 
-        try {
-            $action->run();
-        } catch (Exception $e) {
-            $this->fall($e->getMessage());
-        }
+        $this->fall("Undefined action");
     }
 
     function fall(string $msg)

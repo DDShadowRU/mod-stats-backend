@@ -88,4 +88,10 @@ class MySqlHelper
     {
         return intval(self::query($db, "SELECT GetLikesAddedInLastDay($modId)")->fetch_array(MYSQLI_NUM)[0]);
     }
+
+    static function getAuthorsCount(mysqli $db, ?string $date)
+    {
+        return $db->query("SELECT count(distinct author) FROM stats WHERE date="
+            . ($date ? $date : "(SELECT date FROM stats ORDER BY date DESC LIMIT 1)"))->fetch_array()[0];
+    }
 }

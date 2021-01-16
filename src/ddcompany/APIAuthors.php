@@ -15,11 +15,12 @@ class APIAuthors extends AbstractAPI
         $perPage = clamp(5, 20, $this->getOr("count", 20));
         $orderBy = $this->getOr("order_by", "id");
         $order = $this->getOr("order", "desc");
+        $date = $_GET["date"];
 
-        $count = $db->query("SELECT count(*) FROM authors")->fetch_array()[0];
+        $count = MySqlHelper::getAuthorsCount($db, $date);
         $maxPage = floor($count / $perPage);
         $page = clamp(0, $maxPage, $this->getOr("page", 0));
-        $records = MySqlHelper::getAuthorList($db, $perPage, $page * $perPage, $orderBy, $order, null);
+        $records = $count > 0 ? MySqlHelper::getAuthorList($db, $perPage, $page * $perPage, $orderBy, $order, $date) : [];
 
         $db->close();
         $this->cancel([

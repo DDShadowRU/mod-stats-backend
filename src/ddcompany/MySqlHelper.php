@@ -36,6 +36,11 @@ class MySqlHelper
         return self::query($db, "call GetDaysStats($modId)")->fetch_all(MYSQLI_ASSOC);
     }
 
+    static function getAuthorStats(mysqli $db, int $authorId)
+    {
+        return self::query($db, "call GetAuthorStats($authorId)")->fetch_all(MYSQLI_ASSOC);
+    }
+
     static function getAuthorList(mysqli $db, int $limit, int $offset, string $orderBy, string $order, ?string $date)
     {
         $order = strtolower($order);

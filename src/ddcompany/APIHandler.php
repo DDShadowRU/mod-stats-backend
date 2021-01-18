@@ -14,8 +14,9 @@ class APIHandler
     public function __construct()
     {
         $this->actions["mod/{id}"] = new APIMod();
-        $this->actions["dump"] = new APIDump();
+        $this->actions["author/{id}"] = new APIAuthor();
         $this->actions["authors"] = new APIAuthors();
+        $this->actions["dump"] = new APIDump();
     }
 
     function handle()

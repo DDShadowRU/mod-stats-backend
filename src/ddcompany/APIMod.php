@@ -16,14 +16,14 @@ class APIMod extends AbstractAPI
         $this->cancel([
             "id" => intval($modId),
             "downloads" => [
-                "month" => MySqlHelper::getDownloadsAddedInMonth($db, $modId),
-                "week" => MySqlHelper::getDownloadsAddedInThisWeek($db, $modId),
-                "day" => MySqlHelper::getDownloadsAddedInLastDay($db, $modId),
+                "month" => MySqlHelper::getDownloadsInMonth($db, $modId),
+                "week" => MySqlHelper::getDownloadsInWeek($db, $modId),
+                "day" => MySqlHelper::getDownloadsInDay($db, $modId),
             ],
             "likes" => [
-                "month" => MySqlHelper::getLikesAddedInMonth($db, $modId),
-                "week" => MySqlHelper::getLikesAddedInThisWeek($db, $modId),
-                "day" => MySqlHelper::getLikesAddedInLastDay($db, $modId),
+                "month" => MySqlHelper::getLikesInMonth($db, $modId),
+                "week" => MySqlHelper::getLikesInWeek($db, $modId),
+                "day" => MySqlHelper::getLikesInDay($db, $modId),
             ],
             "days" => $this->getDays($db, $modId)
         ]);
@@ -39,6 +39,6 @@ class APIMod extends AbstractAPI
                 "downloads_added" => intval($day["downloads_added"]),
                 "likes_added" => intval($day["likes_added"])
             ];
-        }, MySqlHelper::getStats($db, $modId));
+        }, MySqlHelper::getModStats($db, $modId));
     }
 }

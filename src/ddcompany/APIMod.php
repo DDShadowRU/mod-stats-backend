@@ -25,20 +25,7 @@ class APIMod extends AbstractAPI
                 "week" => MySqlHelper::getLikesInWeek($db, $modId),
                 "day" => MySqlHelper::getLikesInDay($db, $modId),
             ],
-            "days" => $this->getDays($db, $modId)
+            "days" => MySqlHelper::getModStats($db, $modId)
         ]);
-    }
-
-    function getDays(mysqli $db, int $modId)
-    {
-        return array_map(function ($day) {
-            return [
-                "date" => $day["date"],
-                "downloads" => intval($day["downloads"]),
-                "likes" => intval($day["likes"]),
-                "downloads_added" => intval($day["downloads_added"]),
-                "likes_added" => intval($day["likes_added"])
-            ];
-        }, MySqlHelper::getModStats($db, $modId));
     }
 }

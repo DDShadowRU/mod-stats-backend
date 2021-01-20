@@ -2,6 +2,8 @@
 
 namespace ddcompany;
 
+use ddcompany\stats\AuthorStats;
+
 class APIAuthor extends AbstractAPI
 {
     function run(array $params)
@@ -10,20 +12,20 @@ class APIAuthor extends AbstractAPI
         $authorId = $params["id"];
         $this->requirePresent($authorId, "Invalid author id");
 
-        $db = MySqlHelper::connect();
+        $author = AuthorStats::of($authorId);
         $this->cancel([
             "id" => intval($authorId),
             "downloads" => [
-                "month" => MySqlHelper::getDownloadsInMonthByAuthor($db, $authorId),
-                "week" => MySqlHelper::getDownloadsInWeekByAuthor($db, $authorId),
-                "day" => MySqlHelper::getDownloadsInDayByAuthor($db, $authorId),
+                "month" => $author->getDownloads(Period::MONTH),
+                "week" => $author->getDownloads(Period::WEEK),
+                "day" => $author->getDownloads(Period::DAY),
             ],
             "likes" => [
-                "month" => MySqlHelper::getLikesInMonthByAuthor($db, $authorId),
-                "week" => MySqlHelper::getLikesInWeekByAuthor($db, $authorId),
-                "day" => MySqlHelper::getLikesInDayByAuthor($db, $authorId),
+                "month" => $author->getLikes(Period::MONTH),
+                "week" => $author->getLikes(Period::WEEK),
+                "day" => $author->getLikes(Period::DAY),
             ],
-            "days" => MySqlHelper::getAuthorStats($db, $authorId)
+            "days" => $author->getDays()
         ]);
     }
 }

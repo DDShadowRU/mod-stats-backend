@@ -3,6 +3,8 @@
 
 namespace ddcompany;
 
+use ddcompany\stats\AuthorStats;
+
 require_once "math.php";
 
 class APIAuthors extends AbstractAPI
@@ -17,10 +19,10 @@ class APIAuthors extends AbstractAPI
         $order = $this->getOr("order", "desc");
         $date = $_GET["date"];
 
-        $count = MySqlHelper::getAuthorsCount($db, $date);
+        $count = AuthorStats::getCount($date);
         $maxPage = floor($count / $perPage);
         $page = clamp(0, $maxPage, $this->getOr("page", 0));
-        $records = $count > 0 ? MySqlHelper::getAuthorList($db, $perPage, $page * $perPage, $orderBy, $order, $date) : [];
+        $records = $count > 0 ? AuthorStats::getList($perPage, $page * $perPage, $orderBy, $order, $date) : [];
 
         $db->close();
         $this->cancel([

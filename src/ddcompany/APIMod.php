@@ -2,7 +2,7 @@
 
 namespace ddcompany;
 
-use mysqli;
+use ddcompany\stats\ModStats;
 
 class APIMod extends AbstractAPI
 {
@@ -12,20 +12,20 @@ class APIMod extends AbstractAPI
         $modId = $params["id"];
         $this->requirePresent($modId, "Invalid mod id");
 
-        $db = MySqlHelper::connect();
+        $mod = ModStats::of($modId);
         $this->cancel([
             "id" => intval($modId),
             "downloads" => [
-                "month" => MySqlHelper::getDownloadsInMonth($db, $modId),
-                "week" => MySqlHelper::getDownloadsInWeek($db, $modId),
-                "day" => MySqlHelper::getDownloadsInDay($db, $modId),
+                "month" => $mod->getDownloads(Period::MONTH),
+                "week" => $mod->getDownloads(Period::WEEK),
+                "day" => $mod->getDownloads(Period::DAY),
             ],
             "likes" => [
-                "month" => MySqlHelper::getLikesInMonth($db, $modId),
-                "week" => MySqlHelper::getLikesInWeek($db, $modId),
-                "day" => MySqlHelper::getLikesInDay($db, $modId),
+                "month" => $mod->getLikes(Period::MONTH),
+                "week" => $mod->getLikes(Period::WEEK),
+                "day" => $mod->getLikes(Period::DAY),
             ],
-            "days" => MySqlHelper::getModStats($db, $modId)
+            "days" => $mod->getDays()
         ]);
     }
 }

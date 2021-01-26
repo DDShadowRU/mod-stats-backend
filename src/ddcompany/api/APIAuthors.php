@@ -1,11 +1,11 @@
 <?php
 
 
-namespace ddcompany;
+namespace ddcompany\api;
 
+use ddcompany\MathHelper;
+use ddcompany\MySqlHelper;
 use ddcompany\stats\AuthorStats;
-
-require_once "math.php";
 
 class APIAuthors extends AbstractAPI
 {
@@ -14,14 +14,14 @@ class APIAuthors extends AbstractAPI
         parent::run($params);
 
         $db = MySqlHelper::connect();
-        $perPage = clamp(5, 20, $this->getOr("count", 20));
+        $perPage = MathHelper::clamp(5, 20, $this->getOr("count", 20));
         $orderBy = $this->getOr("order_by", "id");
         $order = $this->getOr("order", "desc");
         $date = $_GET["date"];
 
         $count = AuthorStats::getCount($date);
         $maxPage = floor($count / $perPage);
-        $page = clamp(0, $maxPage, $this->getOr("page", 0));
+        $page = MathHelper::clamp(0, $maxPage, $this->getOr("page", 0));
         $records = $count > 0 ? AuthorStats::getList($perPage, $page * $perPage, $orderBy, $order, $date) : [];
 
         $db->close();

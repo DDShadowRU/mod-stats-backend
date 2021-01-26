@@ -1,7 +1,8 @@
 <?php
 
-namespace ddcompany;
+namespace ddcompany\api;
 
+use ddcompany\Period;
 use ddcompany\stats\ModStats;
 
 class APIMod extends AbstractAPI

@@ -1,5 +1,5 @@
 <?php
-namespace ddcompany;
+namespace ddcompany\api;
 
 interface IAPI
 {

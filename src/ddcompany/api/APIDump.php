@@ -1,8 +1,10 @@
 <?php
 
 
-namespace ddcompany;
+namespace ddcompany\api;
 
+use ddcompany\MySqlException;
+use ddcompany\MySqlHelper;
 
 class APIDump extends AbstractAPI
 {

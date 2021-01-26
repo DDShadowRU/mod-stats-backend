@@ -1,6 +1,6 @@
 <?php
 
-namespace ddcompany;
+namespace ddcompany\api;
 
 use Exception;
 

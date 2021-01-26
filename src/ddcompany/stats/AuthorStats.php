@@ -1,8 +1,6 @@
 <?php
 
-
 namespace ddcompany\stats;
-
 
 use ddcompany\MySqlHelper;
 use ddcompany\Period;

@@ -57,7 +57,7 @@ class ModStats
                     (SELECT $type FROM stats WHERE mod_id = " . $this->id . " AND id < st.id ORDER BY date DESC LIMIT 1))
                 FROM stats st
                 WHERE mod_id = " . $this->id . " 
-                    AND date >= " . ($dates[0] ? $dates[0] : "(SELECT date FROM stats ORDER BY date DESC LIMIT 1)") . "
-                    " . ($dates[1] ? "AND date <= $dates[1]" : ""))->fetch_array(MYSQLI_NUM)[0]);
+                    AND date >= " . ($dates[0] ? "\"" . $dates[0] . "\"" : "(SELECT date FROM stats ORDER BY date DESC LIMIT 1)") . "
+                    " . ($dates[1] ? "AND date <= \"$dates[1]\"" : ""))->fetch_array(MYSQLI_NUM)[0]);
     }
 }

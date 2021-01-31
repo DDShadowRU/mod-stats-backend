@@ -45,4 +45,10 @@ abstract class AbstractAPI implements IAPI
     {
         return microtime(true) - $this->startTime;
     }
+
+    protected function fetchJson($url)
+    {
+        $response = file_get_contents($url);
+        return $response ? json_decode($response) : null;
+    }
 }

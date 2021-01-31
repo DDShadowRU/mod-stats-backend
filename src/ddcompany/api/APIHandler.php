@@ -16,6 +16,7 @@ class APIHandler
         $this->actions["mod/{id}"] = new APIMod();
         $this->actions["author/{id}"] = new APIAuthor();
         $this->actions["authors"] = new APIAuthors();
+        $this->actions["mods"] = new APIMods();
         $this->actions["dump"] = new APIDump();
     }
 

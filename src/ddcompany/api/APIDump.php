@@ -30,7 +30,7 @@ class APIDump extends AbstractAPI
 //                }
 //            }
 
-            if (!$db->query("TRUNCATE `authors`")) {
+            if (!$db->query("TRUNCATE `authors`") || !$db->query("TRUNCATE `tags`")) {
                 $this->log("Truncate authors error: $db->error\n");
             }
 
@@ -45,6 +45,15 @@ class APIDump extends AbstractAPI
                 if (!$db->query("INSERT INTO `stats`(`mod_id`, `date`, `downloads`, `likes`, `comments`, `author`)
                                   VALUES ('$mod->id', now(), '" . $data->downloads . "', '" . $data->likes . "', '" . $comments . "', '" . $data->author . "')")) {
                     $this->log("Insert error for '$mod->id': $db->error\n");
+                }
+
+                if (gettype($data->tags) == "array") {
+                    $tags = implode(",", array_map(function ($tag) use ($mod) {
+                        return "('$mod->id', '$tag')";
+                    }, $data->tags));
+                    if (!$db->query("INSERT INTO `tags`(`mod_id`, `name`) VALUES $tags")) {
+                        $this->log("Tags insert error for '$mod->id': $db->error\n");
+                    }
                 }
 
                 $author = $data->author;
@@ -64,12 +73,6 @@ class APIDump extends AbstractAPI
 
         unlink(self::$lockFile);
         $this->cancel([]);
-    }
-
-    private function fetchJson($url)
-    {
-        $response = file_get_contents($url);
-        return $response ? json_decode($response) : null;
     }
 
     private function fetchDataFor($modId)

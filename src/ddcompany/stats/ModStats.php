@@ -33,6 +33,34 @@ class ModStats
         return new ModStats($id);
     }
 
+    public static function getCount(?int $author = null, ?string $date = null)
+    {
+        $date = !$date ? "null" : $date;
+        return intval(MySqlHelper::query("
+                SELECT COUNT(DISTINCT mod_id) FROM stats WHERE date = ifnull($date, 
+                (SELECT date FROM stats ORDER BY date DESC LIMIT 1)) " . ($author ? "AND author = $author" : ""))->fetch_array(MYSQLI_NUM)[0]);
+    }
+
+    static function getList(int $limit, int $offset, string $orderBy, string $order, ?int $author = null, ?string $date = null)
+    {
+        $order = strtolower($order);
+        if ($order !== "asc" && $order !== "desc") {
+            $order = "desc";
+        }
+
+        if (!in_array($orderBy, ["id", "downloads", "likes", "comments"])) {
+            $orderBy = "id";
+        }
+
+        $date = !$date ? "null" : $date;
+        return MySqlHelper::query("
+                SELECT mod_id as id, author, downloads, likes, comments
+                FROM stats
+                WHERE date = ifnull($date, (SELECT date FROM stats ORDER BY date DESC LIMIT 1)) " . ($author ? "AND author = $author" : "") . "
+                ORDER BY $orderBy $order
+                LIMIT $limit OFFSET $offset")->fetch_all(MYSQLI_ASSOC);
+    }
+
     function getLikes(int $period): int
     {
         return $this->getStats($period, "likes");
